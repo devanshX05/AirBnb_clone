@@ -19,6 +19,7 @@ dns.setServers(['8.8.8.8', '1.1.1.1']);
 const userRouter=require("./routes/userRouter");
 const {hostRouter}=require("./routes/hostRouter");
 const authRouter= require("./routes/authRouter") //auth router
+const paymentRouter = require("./routes/paymentRouter"); //payment router
 
 const app=  express();
 
@@ -41,7 +42,9 @@ const store= new MongoDBStore({
     collection: "session"
 }) //this means, Save all sessions inside MongoDB, collection name, session
 
-app.use(bodyparser.urlencoded()); //alternater of parsing
+
+app.use(bodyparser.urlencoded({ extended: false })); //alternater of parsing
+app.use(express.json());
 const fileFilter=(req,file,cb)=>{
     if(file.mimetype === "image/png" || "image/jpg" || file.mimetype==="image/jpeg"){
         cb(null,true);
@@ -61,6 +64,8 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage,fileFilter
 });
+
+
 app.use(upload.single("photo"));
 app.use(express.static(path.join(__dirname, 'public')));
 // express.static(...): This is a built-in helper function in Express. It tells the server to serve
@@ -94,7 +99,9 @@ app.use((req, res, next) => {
 });
 
 app.use(userRouter);  
-app.use(authRouter)
+app.use(authRouter);
+app.use("/payment", paymentRouter);
+
 
 //we have added this middleware because, so that if i am not logged in and try to visit any other page
 //eg. http://localhost:3001/host/add-home it should redirect me to the login page rather than that page 

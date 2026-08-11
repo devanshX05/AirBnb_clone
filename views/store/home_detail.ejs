@@ -81,7 +81,7 @@
           <!-- Buttons -->
           <div class="mt-auto pt-10 space-y-4">
 
-            <button
+            <button onclick="openPayment('<%= home._id %>', '<%= home.price %>')"
               class="w-full bg-[#FF5A5F] text-white py-3 rounded-xl font-semibold text-lg hover:bg-red-500 transition">
 
               Book Now
@@ -127,6 +127,122 @@
     </div>
 
   </main>
+  <!-- this is my razorpay openpayment function of javascript -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
 
+async function openPayment(homeId, amount) {
+
+    console.log("Home ID:", homeId);
+
+    try {
+
+        // 1. Create Razorpay order through our backend
+        const response = await fetch("/payment/create-order", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                homeId: homeId
+            })
+        });
+
+        const data = await response.json();
+
+        console.log("Order response:", data);
+
+        if (!data.success) {
+            alert("Unable to create payment order.");
+            return;
+        }
+
+        // 2. Razorpay Checkout configuration
+        const options = {
+
+            key: data.key_id,
+
+            amount: data.order.amount,
+
+            currency: data.order.currency,
+
+            name: "Airbnb Clone",
+
+            description: "Booking for <%= home.houseName %>",
+
+            order_id: data.order.id,
+
+            handler: async function (response) {
+
+                console.log("Payment response:", response);
+
+                // 3. Send payment details to backend
+                const verifyResponse = await fetch(
+                    "/payment/verify-payment",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+
+                            razorpay_order_id:
+                                response.razorpay_order_id,
+
+                            razorpay_payment_id:
+                                response.razorpay_payment_id,
+
+                            razorpay_signature:
+                                response.razorpay_signature,
+
+                            homeId: homeId
+                        })
+                    }
+                );
+
+                const verifyData = await verifyResponse.json();
+
+                console.log("Verification response:", verifyData);
+
+                if (verifyData.success) {
+
+                    alert("Payment successful!");
+
+                    // Later you can redirect to booking page
+                    // window.location.href = "/bookings";
+
+                } else {
+
+                    alert("Payment verification failed.");
+
+                }
+            },
+
+            prefill: {
+                name: "<%= user ? user.firstname : '' %>",
+                email: "<%= user ? user.email : '' %>"
+            },
+
+            theme: {
+                color: "#FF5A5F"
+            }
+        };
+
+        // 4. Create Razorpay checkout instance
+        const razorpay = new Razorpay(options);
+
+        // 5. Open Razorpay payment window
+        razorpay.open();
+
+    } catch (error) {
+
+        console.error("Payment error:", error);
+
+        alert("Something went wrong while starting payment.");
+
+    }
+}
+
+</script>
 </body>
 </html>
