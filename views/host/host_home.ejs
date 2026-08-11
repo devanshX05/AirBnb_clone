@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Host Dashboard</title>
+
+  <link rel="stylesheet" href="/home.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 min-h-screen font-sans">
+
+  <!-- Navbar -->
+  <nav class="bg-[#FF5A5F] shadow-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+      <h1 class="text-white text-xl font-bold">
+        Airbnb Host
+      </h1>
+
+      <div class="flex gap-4">
+
+        <a
+          href="/"
+          class="bg-white text-[#FF5A5F] px-5 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+          Home
+        </a>
+
+        <a
+          href="/host/add-home"
+          class="border border-white text-white px-5 py-2 rounded-lg hover:bg-white hover:text-[#FF5A5F] transition">
+          + Add Home
+        </a>
+
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="max-w-7xl mx-auto px-6 py-10">
+
+    <!-- Heading -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 py-10 px-8 text-center mb-10">
+
+      <h2 class="text-4xl font-bold text-gray-800">
+        Your Listed Homes
+      </h2>
+
+      <p class="text-gray-500 mt-3 text-lg">
+        Manage, edit and update your property listings.
+      </p>
+
+    </div>
+
+    <% if (registeredhome.length === 0) { %>
+
+      <div class="bg-white rounded-2xl shadow-md p-12 text-center">
+
+        <div class="text-6xl mb-4">
+          🏠
+        </div>
+
+        <h3 class="text-2xl font-bold text-gray-700">
+          No Homes Listed Yet
+        </h3>
+
+        <p class="text-gray-500 mt-3">
+          Start hosting by adding your first property.
+        </p>
+
+        <a
+          href="/host/add-home"
+          class="inline-block mt-6 bg-[#FF5A5F] text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-500 transition">
+
+          + Add Your First Home
+
+        </a>
+
+      </div>
+
+    <% } else { %>
+
+    <!-- Home Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <% registeredhome.forEach(home => { %>
+
+      <div class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl hover:-translate-y-1 transition duration-300 flex flex-col">
+
+        <!-- Image -->
+        <img
+          src="<%= home.photo %>"
+          alt="<%= home.houseName %>"
+          class="w-full h-56 object-cover">
+
+        <!-- Content -->
+        <div class="p-6 flex flex-col flex-grow">
+
+          <h3 class="text-2xl font-bold text-gray-800 mb-3">
+            <%= home.houseName %>
+          </h3>
+
+          <div class="space-y-2 text-gray-600">
+
+            <p class="font-semibold text-gray-800">
+              💰 ₹<%= home.price %> / night
+            </p>
+
+            <p>
+              📍 <%= home.location %>
+            </p>
+
+            <p>
+              ⭐ <%= home.rating %> / 5
+            </p>
+
+          </div>
+
+          <!-- Buttons -->
+          <div class="mt-6 flex flex-col gap-3">
+
+            <a
+              href="/host/edit_home/<%= home._id %>?editing=true"
+              class="w-full bg-[#FF5A5F] text-white py-3 rounded-lg text-center font-semibold hover:bg-red-500 transition">
+
+              Edit Details
+
+            </a>
+
+            <!-- Replace with your delete form -->
+            <button
+              class="w-full border-2 border-red-500 text-red-500 py-3 rounded-lg font-semibold hover:bg-red-500 hover:text-white transition">
+
+              Delete Home
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <% }) %>
+
+    </div>
+
+    <% } %>
+
+  </main>
+
+</body>
+</html>

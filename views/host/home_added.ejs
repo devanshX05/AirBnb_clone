@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Registered Successfully</title>
+
+  <link rel="stylesheet" href="/home.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 min-h-screen font-sans">
+
+  <!-- Navbar -->
+  <nav class="bg-[#FF5A5F] shadow-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+      <h1 class="text-white text-xl font-bold">
+        Airbnb Host
+      </h1>
+
+      <a
+        href="/"
+        class="bg-white text-[#FF5A5F] px-5 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+        Home
+      </a>
+
+    </div>
+  </nav>
+
+  <!-- Success Card -->
+  <main class="flex items-center justify-center px-6 py-16">
+
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 max-w-lg w-full p-10 text-center">
+
+      <!-- Success Icon -->
+      <div class="w-24 h-24 mx-auto bg-green-100 rounded-full flex items-center justify-center mb-6">
+
+        <span class="text-5xl">
+          ✅
+        </span>
+
+      </div>
+
+      <!-- Heading -->
+      <h2 class="text-3xl font-bold text-gray-800">
+        Home Registered Successfully!
+      </h2>
+
+      <!-- Description -->
+      <p class="text-gray-500 mt-4 leading-relaxed">
+        Your property has been added successfully and is now available for guests to explore.
+      </p>
+
+      <!-- Buttons -->
+      <div class="mt-8 flex flex-col sm:flex-row gap-4">
+
+        <a
+          href="/host/add-home"
+          class="flex-1 border-2 border-[#FF5A5F] text-[#FF5A5F] py-3 rounded-xl font-semibold hover:bg-[#FF5A5F] hover:text-white transition">
+
+          + Add Another Home
+
+        </a>
+
+        <a
+          href="/"
+          class="flex-1 bg-[#FF5A5F] text-white py-3 rounded-xl font-semibold hover:bg-red-500 transition">
+
+          View Homes
+
+        </a>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

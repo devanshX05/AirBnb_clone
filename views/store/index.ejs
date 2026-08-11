@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Index</title>
+
+  <link rel="stylesheet" href="/home.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 min-h-screen font-sans">
+
+  <!-- Navbar -->
+  <nav class="bg-[#FF5A5F] shadow-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+      <h1 class="text-white text-xl font-bold">
+        My Index
+      </h1>
+
+      <a
+        href="/"
+        class="bg-white text-[#FF5A5F] px-5 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+        Go to Home
+      </a>
+
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-6 py-10">
+
+    <!-- Header -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 py-10 px-8 text-center mb-10">
+
+      <h2 class="text-4xl font-bold text-gray-800">
+        My Saved Homes
+      </h2>
+
+      <p class="text-gray-500 mt-3 text-lg">
+        Browse all the homes available in your index.
+      </p>
+
+    </div>
+
+    <% if (registeredhome.length === 0) { %>
+
+      <div class="bg-white rounded-xl shadow-md p-12 text-center">
+
+        <h3 class="text-2xl font-semibold text-gray-700">
+          No Homes Found
+        </h3>
+
+        <p class="text-gray-500 mt-2">
+          There are currently no homes available.
+        </p>
+
+      </div>
+
+    <% } else { %>
+
+    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <% registeredhome.forEach(home => { %>
+
+      <li class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl hover:-translate-y-1 transition duration-300 flex flex-col">
+
+        <!-- Image -->
+        <img
+          src="<%= home.photo %>"
+          alt="<%= home.houseName %>"
+          class="w-full h-56 object-cover">
+
+        <!-- Content -->
+        <div class="p-6 flex flex-col flex-grow">
+
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">
+            <%= home.houseName %>
+          </h2>
+
+          <div class="space-y-2 text-gray-600">
+
+            <p class="font-semibold text-gray-800">
+              💰 ₹<%= home.price %> / night
+            </p>
+
+            <p>
+              📍 <%= home.location %>
+            </p>
+
+            <p>
+              ⭐ <%= home.rating %>
+            </p>
+
+          </div>
+
+          <button
+            class="mt-6 w-full bg-[#FF5A5F] text-white py-3 rounded-lg font-semibold hover:bg-red-500 transition">
+
+            Book Now
+
+          </button>
+
+        </div>
+
+      </li>
+
+      <% }) %>
+
+    </ul>
+
+    <% } %>
+
+  </main>
+
+</body>
+</html>

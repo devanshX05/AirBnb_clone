@@ -1,0 +1,36 @@
+{
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.3.1",
+    "bcryptjs": "^3.0.3",
+    "connect-mongodb-session": "^5.0.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "express-validator": "^7.3.2",
+    "init": "^0.1.2",
+    "mongodb": "^7.4.0",
+    "mongoose": "^9.7.4",
+    "multer": "^2.2.0",
+    "mysql2": "^3.22.5"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.5.0",
+    "nodemon": "^3.1.14",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^4.3.1"
+  },
+  "name": "airbnb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}

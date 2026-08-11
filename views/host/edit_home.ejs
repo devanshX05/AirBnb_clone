@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= editing ? "Edit Home" : "Register Home" %></title>
+
+  <link rel="stylesheet" href="/home.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 min-h-screen font-sans">
+
+  <!-- Navbar -->
+  <nav class="bg-[#FF5A5F] shadow-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+      <h1 class="text-white text-xl font-bold">
+        Airbnb Host
+      </h1>
+
+      <a
+        href="/"
+        class="bg-white text-[#FF5A5F] px-5 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+        Home
+      </a>
+
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="max-w-4xl mx-auto px-6 py-10">
+
+    <div class="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+
+      <!-- Header -->
+      <div class="bg-[#FF5A5F] px-8 py-6 text-white">
+
+        <h2 class="text-3xl font-bold">
+          <%= editing ? "Edit Your Home" : "Register Your Home" %>
+        </h2>
+
+        <p class="mt-2 text-white/90">
+          Fill in the details below to list your property.
+        </p>
+
+      </div>
+
+      <!-- Form -->
+      <form
+        action="/host/<%= editing ? 'edit_home' : 'add-home' %>"
+        method="POST"
+        enctype="multipart/form-data"
+        class="p-8 space-y-8">
+
+        <input
+          type="hidden"
+          name="id"
+          value="<%= editing ? home._id : '' %>">
+
+        <!-- House Name -->
+        <div>
+
+          <label class="block text-gray-700 font-semibold mb-2">
+            House Name
+          </label>
+
+          <input
+            type="text"
+            name="houseName"
+            value="<%= editing ? home.houseName : '' %>"
+            placeholder="Enter your house name"
+            required
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]">
+
+        </div>
+
+        <!-- Price & Rating -->
+        <div class="grid md:grid-cols-2 gap-6">
+
+          <div>
+
+            <label class="block text-gray-700 font-semibold mb-2">
+              Price Per Night
+            </label>
+
+            <input
+              type="text"
+              name="price"
+              value="<%= editing ? home.price : '' %>"
+              placeholder="₹ 2500"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]">
+
+          </div>
+
+          <div>
+
+            <label class="block text-gray-700 font-semibold mb-2">
+              Rating
+            </label>
+
+            <input
+              type="text"
+              name="rating"
+              value="<%= editing ? home.rating : '' %>"
+              placeholder="4.8"
+              required
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]">
+
+          </div>
+
+        </div>
+
+        <!-- Location -->
+        <div>
+
+          <label class="block text-gray-700 font-semibold mb-2">
+            Location
+          </label>
+
+          <input
+            type="text"
+            name="location"
+            value="<%= editing ? home.location : '' %>"
+            placeholder="Enter location"
+            required
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]">
+
+        </div>
+
+        <!-- Image Upload -->
+        <div>
+
+          <label class="block text-gray-700 font-semibold mb-3">
+            Property Image
+          </label>
+
+          <div class="border-2 border-dashed border-gray-300 rounded-xl p-6 bg-gray-50">
+
+            <input
+              type="file"
+              name="photo"
+              accept="image/png,image/jpeg,image/jpg"
+              <%= editing ? "" : "required" %>
+              class="w-full text-gray-600
+              file:mr-4
+              file:px-5
+              file:py-3
+              file:border-0
+              file:rounded-lg
+              file:bg-[#FF5A5F]
+              file:text-white
+              file:font-semibold
+              file:cursor-pointer
+              file:hover:bg-red-500">
+
+            <p class="text-sm text-gray-500 mt-3">
+              Supported formats: JPG, JPEG, PNG
+            </p>
+
+          </div>
+
+        </div>
+
+        <!-- Description -->
+        <div>
+
+          <label class="block text-gray-700 font-semibold mb-2">
+            Description
+          </label>
+
+          <textarea
+            name="discription"
+            rows="5"
+            placeholder="Describe your property..."
+            required
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-[#FF5A5F]"><%= editing ? home.discription : '' %></textarea>
+
+        </div>
+
+        <!-- Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 pt-4">
+
+          <button
+            type="submit"
+            class="flex-1 bg-[#FF5A5F] text-white py-3 rounded-xl font-semibold hover:bg-red-500 transition">
+
+            <%= editing ? "✓ Update Home" : "+ Add Home" %>
+
+          </button>
+
+          <a
+            href="/"
+            class="flex-1 border-2 border-[#FF5A5F] text-[#FF5A5F] py-3 rounded-xl font-semibold text-center hover:bg-[#FF5A5F] hover:text-white transition">
+
+            Cancel
+
+          </a>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </main>
+
+</body>
+</html>

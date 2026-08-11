@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Airbnb Home</title>
+
+  <link rel="stylesheet" href="/home.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-50 min-h-screen font-sans">
+
+  <!-- ================= NAVBAR ================= -->
+  <nav class="bg-[#FF5A5F] shadow-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+      <div class="flex items-center gap-6 font-medium text-white">
+        <a href="/" class="hover:text-gray-100 transition">Home</a>
+
+        <% if (isLoggedIn) { %>
+
+          <% if (user && user.userType === "guest") { %>
+            <a href="/bookings" class="hover:text-gray-100 transition">Bookings</a>
+            <a href="/favourite_list" class="hover:text-gray-100 transition">Favourites</a>
+            <a href="/index" class="hover:text-gray-100 transition">Index</a>
+          <% } %>
+
+          <% if (user && user.userType === "host") { %>
+            <a href="/host/host_home" class="hover:text-gray-100 transition">Host Homes</a>
+            <a href="/host/add-home" class="hover:text-gray-100 transition">Add Home</a>
+          <% } %>
+
+        <% } %>
+      </div>
+
+      <% if (isLoggedIn) { %>
+
+      <form action="/logout" method="POST">
+        <button
+          type="submit"
+          class="bg-white text-[#FF5A5F] px-5 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+          Logout
+        </button>
+      </form>
+
+      <% } else { %>
+
+      <div class="flex items-center gap-4">
+        <a href="/signup"
+          class="bg-white text-[#FF5A5F] px-5 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">
+          Sign Up
+        </a>
+
+        <a href="/login"
+          class="border border-white px-5 py-2 rounded-lg hover:bg-white hover:text-[#FF5A5F] transition">
+          Login
+        </a>
+      </div>
+
+      <% } %>
+
+    </div>
+  </nav>
+
+  <!-- ================= PAGE HEADER ================= -->
+
+  <main class="max-w-7xl mx-auto px-6 py-10">
+
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 py-10 px-8 text-center mb-10">
+
+      <h1 class="text-4xl font-bold text-gray-800">
+        Explore Our Homes
+      </h1>
+
+      <p class="text-gray-500 mt-3 text-lg">
+        Find the perfect place for your next stay.
+      </p>
+
+    </div>
+
+    <!-- ================= HOME GRID ================= -->
+
+    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <% registeredhome.forEach(home => { %>
+
+      <li
+        class="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl hover:-translate-y-1 transition duration-300 flex flex-col">
+
+        <!-- Image -->
+
+        <img
+          src="<%= home.photo %>"
+          alt="<%= home.houseName %>"
+          class="w-full h-56 object-cover">
+
+        <!-- Content -->
+
+        <div class="p-6 flex flex-col flex-grow">
+
+          <h2 class="text-2xl font-bold text-gray-800 mb-3">
+            <%= home.houseName %>
+          </h2>
+
+          <div class="space-y-2 text-gray-600">
+
+            <p class="font-semibold text-gray-800">
+              💰 ₹<%= home.price %> / night
+            </p>
+
+            <p>
+              📍 <%= home.location %>
+            </p>
+
+            <p>
+              ⭐ <%= home.rating %>
+            </p>
+
+          </div>
+
+          <div class="mt-6 flex flex-col gap-3">
+
+            <a
+              href="/home/<%= home._id %>"
+              class="w-full bg-[#FF5A5F] text-white py-3 rounded-lg font-semibold text-center hover:bg-red-500 transition">
+
+              View Details
+
+            </a>
+
+            <button
+              class="w-full border-2 border-[#FF5A5F] text-[#FF5A5F] py-3 rounded-lg font-semibold hover:bg-[#FF5A5F] hover:text-white transition">
+
+              Book Now
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </li>
+
+      <% }) %>
+
+    </ul>
+
+  </main>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= home.houseName %></title>
+
+  <link rel="stylesheet" href="/home.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen font-sans">
+
+  <!-- Navbar -->
+  <nav class="bg-[#FF5A5F] shadow-md">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center gap-6 text-white font-medium">
+      <a href="/" class="hover:text-gray-100 transition">Home</a>
+      <a href="/bookings" class="hover:text-gray-100 transition">Bookings</a>
+      <a href="/favourite_list" class="hover:text-gray-100 transition">Favourites</a>
+      <a href="/index" class="hover:text-gray-100 transition">Index</a>
+    </div>
+  </nav>
+
+  <!-- Main -->
+  <main class="max-w-6xl mx-auto px-6 py-12">
+
+    <!-- Page Heading -->
+    <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 text-center mb-10">
+
+      <h1 class="text-4xl font-bold text-gray-800">
+        Home Details
+      </h1>
+
+      <p class="text-gray-500 mt-2">
+        Everything you need to know about this stay.
+      </p>
+
+    </div>
+
+    <!-- Detail Card -->
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+
+      <div class="grid md:grid-cols-2">
+
+        <!-- Image -->
+        <div class="bg-gray-100 flex items-center justify-center p-6">
+
+          <img
+            src="<%= home.photo %>"
+            alt="<%= home.houseName %>"
+            class="w-full h-96 object-cover rounded-xl shadow">
+
+        </div>
+
+        <!-- Details -->
+        <div class="p-8 flex flex-col">
+
+          <h2 class="text-4xl font-bold text-gray-800 mb-6">
+            <%= home.houseName %>
+          </h2>
+
+          <div class="space-y-5 text-lg text-gray-700">
+
+            <div class="flex justify-between border-b pb-3">
+              <span class="font-semibold">💰 Price</span>
+              <span>₹<%= home.price %> / night</span>
+            </div>
+
+            <div class="flex justify-between border-b pb-3">
+              <span class="font-semibold">📍 Location</span>
+              <span><%= home.location %></span>
+            </div>
+
+            <div class="flex justify-between border-b pb-3">
+              <span class="font-semibold">⭐ Rating</span>
+              <span><%= home.rating %> / 5</span>
+            </div>
+
+          </div>
+
+          <!-- Buttons -->
+          <div class="mt-auto pt-10 space-y-4">
+
+            <button
+              class="w-full bg-[#FF5A5F] text-white py-3 rounded-xl font-semibold text-lg hover:bg-red-500 transition">
+
+              Book Now
+
+            </button>
+
+            <form action="/favourite_list" method="POST">
+
+              <input
+                type="hidden"
+                name="homeId"
+                value="<%= home._id %>">
+
+              <button
+                type="submit"
+                class="w-full border-2 border-[#FF5A5F] text-[#FF5A5F] py-3 rounded-xl font-semibold text-lg hover:bg-[#FF5A5F] hover:text-white transition">
+
+                Add to Favourites
+
+              </button>
+
+            </form>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Back Button -->
+    <div class="text-center mt-10">
+
+      <a
+        href="/"
+        class="inline-block bg-[#FF5A5F] text-white px-8 py-3 rounded-xl font-semibold hover:bg-red-500 transition shadow">
+
+        ← Back to Home
+
+      </a>
+
+    </div>
+
+  </main>
+
+</body>
+</html>
