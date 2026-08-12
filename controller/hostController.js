@@ -78,7 +78,7 @@ exports.getEdithome = (req, res, next) => {
 };
     exports.postEdithome=(req,res,next)=>{
         const {houseName,price,location,rating,discription,id}=req.body; 
-        const photo= req.file.path;
+        const photo = "/uploads/" + req.file.filename;
                 Home.findById(id).then((home)=>{
                     home.houseName=houseName;
                     home.price=price;
@@ -87,6 +87,9 @@ exports.getEdithome = (req, res, next) => {
                     home.photo=photo;
                     home.discription=discription;
                     // home._id=id;
+                    if (req.file) {
+                            home.photo = "/uploads/" + req.file.filename;
+                    }
                     home.save().then(result=>{
                     console.log("Home updated",result);
 

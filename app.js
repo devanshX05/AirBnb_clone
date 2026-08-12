@@ -43,8 +43,10 @@ const store= new MongoDBStore({
 }) //this means, Save all sessions inside MongoDB, collection name, session
 
 
-app.use(bodyparser.urlencoded({ extended: false })); //alternater of parsing
+app.use(bodyparser.urlencoded({ extended: true })); //alternater of parsing
 app.use(express.json());
+
+
 const fileFilter=(req,file,cb)=>{
     if(file.mimetype === "image/png" || "image/jpg" || file.mimetype==="image/jpeg"){
         cb(null,true);
@@ -122,11 +124,19 @@ app.use(hostRouter); // alternate= for adding common path.... app.use("/host",ho
 
 app.use(Errorcontroller.Notfound); //Error controller added
 
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(err.statusCode || 500).json({
+    success: false,
+    message: err.message || "Something went wrong"
+  });
+});
+
 
 const PORT=process.env.PORT || 3001;
 mongoose.connect(DBpath).then(()=>{
     console.log("Connection established successfull");
-    app.listen(PORT,()=>{
+    app.listen(PORT,"0.0.0.0",()=>{
     console.log(`Server running on address http://localhost:${PORT}`);
     })
 }).catch(err=>{

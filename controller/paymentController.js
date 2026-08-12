@@ -14,6 +14,13 @@ const createOrder= async (req,res,next)=>{//creating an api call
         const {homeId}= req.body; //the amount will be in ruppees from the client
         console.log("Home ID:", homeId);
 
+        if (!homeId) {
+            return res.status(400).json({
+                success: false,
+                message: "Home ID is required"
+            });
+        }
+
         // Find the home
         const home = await Home.findById(homeId);
 
@@ -37,7 +44,7 @@ const createOrder= async (req,res,next)=>{//creating an api call
         const option ={                          //these are the things that we will be sending to razorpay
             amount: Math.round(amount *100), //razorpay uses paisa that is why we are converting the amount
             currency: "INR",
-            reciept: `reciept_${Date.now()}`, //it is for our refernce
+            receipt: `receipt_${Date.now()}`, //it is for our refernce
         };
 
         //now sending data to razorpay
