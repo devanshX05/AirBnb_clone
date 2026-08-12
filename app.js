@@ -9,7 +9,6 @@ const MongoDBStore= require("connect-mongodb-session")(session) //Without it,ses
 //We are using session becoz, anyone can change the data of the stored cookie as cookies alone are not secure for storing sensitive data.
 const DBpath=process.env.MONGO_URI;
 
-const multer=require("multer");
 
 //DNS fixture 
 const dns = require('dns');
@@ -47,28 +46,37 @@ app.use(bodyparser.urlencoded({ extended: true })); //alternater of parsing
 app.use(express.json());
 
 
-const fileFilter=(req,file,cb)=>{
-    if(file.mimetype === "image/png" || "image/jpg" || file.mimetype==="image/jpeg"){
-        cb(null,true);
-    }
-    else{
-        cb(null,false)
-    }
-}
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "uploads/");
-    },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + "-" + file.originalname);
-    }
-});
-const upload = multer({
-    storage,fileFilter
-});
+// const fileFilter=(req,file,cb)=>{
+//     if(file.mimetype === "image/png" || "image/jpg" || file.mimetype==="image/jpeg"){
+//         cb(null,true);
+//     }
+//     else{
+//         cb(null,false)
+//     }
+//}
+//old multer
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, "uploads/");
+//     },
+//     filename: (req, file, cb) => {
+//         cb(null, Date.now() + "-" + file.originalname);
+//     }
+// });
+
+//new multer
+// const storage = multer.memoryStorage();
+
+// const upload = multer({
+//     storage: storage
+// });
+
+// const upload = multer({
+//     storage,fileFilter
+// });
 
 
-app.use(upload.single("photo"));
+// app.use(upload.single("photo"));
 app.use(express.static(path.join(__dirname, 'public')));
 // express.static(...): This is a built-in helper function in Express. It tells the server to serve
 //  "static assets"—files that don't change dynamically (like CSS, images, or client-side JS files).

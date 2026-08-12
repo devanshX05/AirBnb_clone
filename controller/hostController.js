@@ -1,5 +1,25 @@
     const path = require('path');
     const Home = require('../models/homes');
+    const cloudinary = require('../config/cloudinary');
+    
+    const uploadToCloudinary = (buffer) => {
+    return new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+            {
+                folder: "airbnb_clone"
+            },
+            (error, result) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(result);
+                }
+            }
+        );
+
+        stream.end(buffer);
+    });
+};
 
     //constroller of get from hostrouter
     exports.getAddhome = (req,res,next)=>{
@@ -24,31 +44,55 @@
         });
 }
     ////constroller of post from hostrouter
-    exports.postAddhome=(req,res,next)=>{
-                // console.log("Home registration successful for:",req.body);
-                const {houseName,price,location,rating,discription}=req.body; //alternate of below line Destructuring
-                // const home=new Home(req.body.homeName,req.body.Price,req.body.Location,req.body.Rating,req.body.photo)
-                console.log(req.file);
-                if(!req.file){
-                    console.log("no image provided");
-                    return res.redirect("/host/add-home")
-                }
+    exports.postAddhome = async (req, res, next) => {
+    try {
+        const {
+            houseName,
+            price,
+            location,
+            rating,
+            discription
+        } = req.body;
 
-                const photo = "/uploads/" + req.file.filename;
-                const home = new Home({
-                    houseName,
-                    price,
-                    location,
-                    rating,
-                    photo,
-                    discription
-                });
-                home.save().then(()=>{
-                    console.log("Home saved successfully");
-                    res.render(path.join(__dirname,"../",'views','host','home_added.ejs'));
-                })
-                
-    }
+        console.log(req.file);
+
+        if (!req.file) {
+            console.log("No image provided");
+            return res.redirect("/host/add-home");
+        }
+
+        const result = await uploadToCloudinary(req.file.buffer);
+
+        const photo = result.secure_url;
+
+        const home = new Home({
+            houseName,
+            price,
+            location,
+            rating,
+            photo,
+            discription
+        });
+
+        await home.save();
+
+        console.log("Home saved successfully");
+
+        res.render(
+            path.join(
+                __dirname,
+                "../",
+                "views",
+                "host",
+                "home_added.ejs"
+            )
+        );
+
+        } catch (err) {
+            console.log("Error while adding home:", err);
+            res.redirect("/host/add-home");
+        }
+    };
 
 exports.getEdithome = (req, res, next) => {
 
@@ -76,31 +120,47 @@ exports.getEdithome = (req, res, next) => {
             console.log(err);
         });
 };
-    exports.postEdithome=(req,res,next)=>{
-        const {houseName,price,location,rating,discription,id}=req.body; 
-        const photo = "/uploads/" + req.file.filename;
-                Home.findById(id).then((home)=>{
-                    home.houseName=houseName;
-                    home.price=price;
-                    home.location=location;
-                    home.rating=rating;
-                    home.photo=photo;
-                    home.discription=discription;
-                    // home._id=id;
-                    if (req.file) {
-                            home.photo = "/uploads/" + req.file.filename;
-                    }
-                    home.save().then(result=>{
-                    console.log("Home updated",result);
+    exports.postEdithome = async (req, res, next) => {
+    try {
+        const {
+            houseName,
+            price,
+            location,
+            rating,
+            discription,
+            id
+        } = req.body;
 
-                });
-                res.redirect("/host/host_home");
-            })
-                .catch(err=>{
-                    console.log(err);
-                });
-                
+        const home = await Home.findById(id);
+
+        if (!home) {
+            return res.redirect("/host/host_home");
+        }
+
+        home.houseName = houseName;
+        home.price = price;
+        home.location = location;
+        home.rating = rating;
+        home.discription = discription;
+
+        // Only upload a new image if the user selected one
+        if (req.file) {
+            const result = await uploadToCloudinary(req.file.buffer);
+
+            home.photo = result.secure_url;
+        }
+
+        await home.save();
+
+        console.log("Home updated", home);
+
+        res.redirect("/host/host_home");
+
+    } catch (err) {
+        console.log("Error while updating home:", err);
+        res.redirect("/host/host_home");
     }
+};
 
     
 
